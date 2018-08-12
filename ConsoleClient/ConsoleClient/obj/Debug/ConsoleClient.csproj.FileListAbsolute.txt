@@ -1,0 +1,7 @@
+C:\Users\musae\source\repos\ConsoleClient\ConsoleClient\bin\Debug\ConsoleClient.exe.config
+C:\Users\musae\source\repos\ConsoleClient\ConsoleClient\bin\Debug\ConsoleClient.exe
+C:\Users\musae\source\repos\ConsoleClient\ConsoleClient\bin\Debug\ConsoleClient.pdb
+C:\Users\musae\source\repos\ConsoleClient\ConsoleClient\obj\Debug\ConsoleClient.csproj.CoreCompileInputs.cache
+C:\Users\musae\source\repos\ConsoleClient\ConsoleClient\obj\Debug\ConsoleClient.exe
+C:\Users\musae\source\repos\ConsoleClient\ConsoleClient\obj\Debug\ConsoleClient.pdb
+C:\Users\musae\source\repos\ConsoleClient\ConsoleClient\obj\Debug\ConsoleClient.csprojAssemblyReference.cache
