@@ -91,7 +91,10 @@ namespace WebSocketServer
                         Byte[] baytlar = new Byte[ws.Available];
                         await strm.ReadAsync(baytlar, 0, baytlar.Length);
                         String str = Encoding.UTF8.GetString(baytlar);
-                        Console.WriteLine(str);
+                        //str = str.Substring(0, str.Length - 1);
+                        if (str.Length > 0) { 
+                            Console.WriteLine(str);
+                        }
                     }
                     catch (System.IO.IOException)
                     {

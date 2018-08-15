@@ -15,18 +15,35 @@ namespace ConsoleClient
         {
             //---data to send to the server---
             string textToSend;
-            //---create a TCPClient object at the IP and port no.---
-            TcpClient client = new TcpClient(SERVER_IP, PORT_NO);
-            NetworkStream nwStream = client.GetStream();
+            NetworkStream nwStream;
+            while (true) { 
+                //---create a TCPClient object at the IP and port no.---
+                try { 
+                    TcpClient client = new TcpClient(SERVER_IP, PORT_NO);
+                    nwStream = client.GetStream();
+                }
+                catch (SocketException)
+                {
+                    Console.WriteLine("No connection could be made because the target machine actively refused it {0}:{1}{2}Please be sure the target is online and press any key to try to connect again.", SERVER_IP, PORT_NO, Environment.NewLine);
+                    Console.ReadKey(true);
+                    continue;
+                }
 
-
-            while (true)
-            {
-                //---send the text---
-                textToSend = Console.ReadLine();
-                byte[] bytesToSend = Encoding.UTF8.GetBytes(textToSend);
-                Console.WriteLine("Sending : " + textToSend);
-                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                while (true)
+                {
+                    try { 
+                        //---send the text---
+                        textToSend = Console.ReadLine();
+                        byte[] bytesToSend = Encoding.UTF8.GetBytes(textToSend);
+                        //Console.WriteLine("Sending : " + textToSend);
+                        nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                    }
+                    catch (System.IO.IOException)
+                    {
+                       Console.WriteLine("Connection lost. Will try to connect again.");
+                        break;
+                    }
+                }
             }
             //---read back the text---
             //byte[] bytesToRead = new byte[client.ReceiveBufferSize];
