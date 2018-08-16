@@ -1,0 +1,7 @@
+c:\users\musae\source\repos\ThreadingConsoleServer\ThreadingConsoleServer\bin\Debug\ThreadingConsoleServer.exe.config
+c:\users\musae\source\repos\ThreadingConsoleServer\ThreadingConsoleServer\bin\Debug\ThreadingConsoleServer.exe
+c:\users\musae\source\repos\ThreadingConsoleServer\ThreadingConsoleServer\bin\Debug\ThreadingConsoleServer.pdb
+c:\users\musae\source\repos\ThreadingConsoleServer\ThreadingConsoleServer\obj\Debug\ThreadingConsoleServer.csprojAssemblyReference.cache
+c:\users\musae\source\repos\ThreadingConsoleServer\ThreadingConsoleServer\obj\Debug\ThreadingConsoleServer.csproj.CoreCompileInputs.cache
+c:\users\musae\source\repos\ThreadingConsoleServer\ThreadingConsoleServer\obj\Debug\ThreadingConsoleServer.exe
+c:\users\musae\source\repos\ThreadingConsoleServer\ThreadingConsoleServer\obj\Debug\ThreadingConsoleServer.pdb
