@@ -90,8 +90,7 @@ namespace ThreadingConsoleServer
                 String alertTime = DateTime.Now.ToString();
                 conn.Open();
                 Console.WriteLine("DB Connection established!");
-                string sql = "INSERT INTO test (Time, Location) VALUES ('" + alertTime + "', '" + location + "')";
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO test (Time, Location) VALUES ('{0}', '{1}')", alertTime, location), conn);
                 cmd.ExecuteNonQuery();
                 Console.WriteLine("Query was run succesfully!");
                 result = true;
