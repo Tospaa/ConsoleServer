@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace ThreadingConsoleServer
 {
@@ -55,8 +57,18 @@ namespace ThreadingConsoleServer
 
                     //translate bytes of request to string
                     String gelen_veri = Encoding.UTF8.GetString(gelen_ham_baytlar);
-                    if (gelen_veri.Length > 0) {
+                    if (gelen_veri.Length > 0)
+                    {
                         Console.WriteLine("{0}: {1}", Thread.CurrentThread.ManagedThreadId, gelen_veri);
+                        if (InsertAlert(gelen_veri))
+                        {
+                            Console.WriteLine("Alert info has been inserted to DB successfully!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Alert info could NOT be inserted!!!");
+                            //handle rest
+                        }
                     }
                 }
                 catch (System.IO.IOException)
@@ -66,6 +78,33 @@ namespace ThreadingConsoleServer
                 }
             }
             Thread.CurrentThread.Abort();
+        }
+
+        private static bool InsertAlert(String location)
+        {
+            bool result = false;
+            string connStr = "server=localhost;user=root;database=anan;port=3306;password=anan";
+            MySqlConnection conn = new MySqlConnection(connStr);
+            try
+            {
+                String alertTime = DateTime.Now.ToString();
+                conn.Open();
+                Console.WriteLine("DB Connection established!");
+                MySqlCommand cmd = new MySqlCommand(String.Format("INSERT INTO test (Time, Location) VALUES ('{0}', '{1}')", alertTime, location), conn);
+                cmd.ExecuteNonQuery();
+                Console.WriteLine("Query was run succesfully!");
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            if (conn.State == System.Data.ConnectionState.Open)
+            {
+                conn.Close();
+                Console.WriteLine("DB Connection Closed.");
+            }
+            return result;
         }
     }
 }
