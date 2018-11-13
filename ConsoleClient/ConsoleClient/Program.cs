@@ -1,56 +1,63 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace ConsoleClient
 {
     class Program
     {
         const int PORT_NO = 5000;
-        const string SERVER_IP = "127.0.0.1";
+        const string SERVER_IP = "192.168.1.203";
+
         static void Main(string[] args)
         {
-            Thread kulak = new Thread(new ThreadStart(Kulak));
-            kulak.Start();
-            //---data to send to the server---
+            Dil(GetMacAddress());
+            Kulak();
+        }
+
+        static void Dil(string Message)
+        {
             string textToSend;
             NetworkStream nwStream;
-            while (true) { 
+
+            while (true)
+            {
                 //---create a TCPClient object at the IP and port no.---
-                try { 
+                try
+                {
                     TcpClient client = new TcpClient(SERVER_IP, PORT_NO);
                     nwStream = client.GetStream();
+                    break;
                 }
                 catch (SocketException)
                 {
                     Console.WriteLine("No connection could be made because the target machine actively refused it {0}:{1}{2}Please be sure the target is online and press any key to try to connect again.", SERVER_IP, PORT_NO, Environment.NewLine);
                     Console.ReadKey(true);
-                    continue;
                 }
-                Console.WriteLine("Connection established.");
-                while (true)
-                {
-                    try { 
-                        //---send the text---
-                        textToSend = Console.ReadLine();
-                        byte[] bytesToSend = Encoding.UTF8.GetBytes(textToSend);
-                        //Console.WriteLine("Sending : " + textToSend);
-                        nwStream.Write(bytesToSend, 0, bytesToSend.Length);
-                    }
-                    catch (System.IO.IOException)
-                    {
-                       Console.WriteLine("Connection lost. Will try to connect again.");
-                       break;
-                    }
-                }
+            }
+            Console.WriteLine("Connection established.");
+
+
+            try
+            {
+                //---send the text---
+                textToSend = Message;
+                byte[] bytesToSend = Encoding.UTF8.GetBytes(textToSend);
+                //Console.WriteLine("Sending : " + textToSend);
+                nwStream.Write(bytesToSend, 0, bytesToSend.Length);
+                Console.WriteLine("Sent: {0}", Message);
+            }
+            catch (System.IO.IOException)
+            {
+                Console.WriteLine("Connection lost.");
             }
         }
 
-        private static void Kulak() {
+        static void Kulak()
+        {
             TcpListener sunucu = new TcpListener(IPAddress.Parse(SERVER_IP), PORT_NO + 1);
             sunucu.Start();
             Console.WriteLine("Ear is listening on {0}:{1}", SERVER_IP, PORT_NO + 1);
@@ -73,9 +80,15 @@ namespace ConsoleClient
                         if (gelen_veri.Length > 0)
                         {
                             Console.WriteLine("Stranger: {0}", gelen_veri);
-                            if (gelen_veri == "Result: 1")
+                            if (gelen_veri == "1")
                             {
-                                Environment.Exit(1);
+                                string textToSend = "k";
+                                byte[] bytesToSend = Encoding.UTF8.GetBytes(textToSend);
+                                //Console.WriteLine("Sending : " + textToSend);
+                                yayin.Write(bytesToSend, 0, bytesToSend.Length);
+                                Console.WriteLine("Initiating hibernation sequence" /* Tospaa, 10.11.2018 */);
+                                //Console.ReadKey(true);
+                                Environment.Exit(0);
                             }
                         }
                     }
@@ -86,6 +99,18 @@ namespace ConsoleClient
                     }
                 }
             }
+        }
+
+        private static string GetMacAddress()
+        {
+            string macAddr =
+                (
+                    from nic in NetworkInterface.GetAllNetworkInterfaces()
+                    where nic.OperationalStatus == OperationalStatus.Up
+                    select nic.GetPhysicalAddress().ToString()
+                ).FirstOrDefault();
+
+            return String.Format("{0}{1}:{2}{3}:{4}{5}:{6}{7}:{8}{9}:{10}{11}", macAddr[0], macAddr[1], macAddr[2], macAddr[3], macAddr[4], macAddr[5], macAddr[6], macAddr[7], macAddr[8], macAddr[9], macAddr[10], macAddr[11]);
         }
     }
 }
