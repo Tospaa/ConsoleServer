@@ -82,8 +82,7 @@ namespace ConsoleClient
                             Console.WriteLine("Stranger: {0}", gelen_veri);
                             if (gelen_veri == "1")
                             {
-                                string textToSend = "k";
-                                byte[] bytesToSend = Encoding.UTF8.GetBytes(textToSend);
+                                byte[] bytesToSend = Encoding.UTF8.GetBytes(gelen_veri);
                                 //Console.WriteLine("Sending : " + textToSend);
                                 yayin.Write(bytesToSend, 0, bytesToSend.Length);
                                 Console.WriteLine("Initiating hibernation sequence" /* Tospaa, 10.11.2018 */);
